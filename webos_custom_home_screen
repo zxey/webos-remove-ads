@@ -137,7 +137,7 @@ create_app_interfaces_override() {
     cp $APP_INTERFACES_SOURCE "$WORKDIR/AppInterfaces.qml"
 
     # Finally we modify the file.
-    sed -i '279 i console.log(root.fullCandidateList)' "$WORKDIR/AppInterfaces.qml"
+    sed -i '312 i console.log("HERE", item)' "$WORKDIR/AppInterfaces.qml"
 }
 
 debug_app_interfaces() {
