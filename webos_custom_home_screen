@@ -21,7 +21,6 @@ RECOMMENDED_SOURCE="/usr/palm/applications/com.webos.app.home/qml/UserInterfaceL
 TOP_SHELF_SOURCE="/usr/palm/applications/com.webos.app.home/qml/UserInterfaceLayer/Containers/Main/TopShelf.qml"
 APP_INTERFACES_SOURCE="/usr/palm/applications/com.webos.app.home/qml/Interfaces/AppInterfaces/AppInterfaces.qml"
 
-sha512sum /usr/palm/applications/com.webos.app.home/qml/UserInterfaceLayer/Containers/Main/TopShelf.qml
 check_war_enabled() {
     # This can be used to disable the script while keeping it in place. Set WEBOS_CUSTOM_HOME_SCREEN_ENABLED to false in the env variables above.
     if [ $WEBOS_CUSTOM_HOME_SCREEN_ENABLED = false ]; then
