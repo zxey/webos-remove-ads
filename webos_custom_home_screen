@@ -19,6 +19,7 @@ WORKDIR="/tmp/webos_custom_home_screen"
 AI_BOARD_SOURCE="/usr/palm/applications/com.webos.app.home/qml/UserInterfaceLayer/Containers/Main/AIBoard.qml"
 RECOMMENDED_SOURCE="/usr/palm/applications/com.webos.app.home/qml/UserInterfaceLayer/Containers/Main/Recommended.qml"
 TOP_SHELF_SOURCE="/usr/palm/applications/com.webos.app.home/qml/UserInterfaceLayer/Containers/Main/TopShelf.qml"
+APP_INTERFACES_SOURCE="/usr/palm/applications/com.webos.app.home/qml/Interfaces/AppInterfaces/AppInterfaces.qml"
 
 sha512sum /usr/palm/applications/com.webos.app.home/qml/UserInterfaceLayer/Containers/Main/TopShelf.qml
 check_war_enabled() {
@@ -128,6 +129,36 @@ remove_top_shelf() {
     fi
 }
 
+create_app_interfaces_override() {
+    umount "$APP_INTERFACES_SOURCE" > /dev/null 2>&1 || :
+    # check_target_sums "app_interfaces"
+
+    # This runs if the modified file is not found.
+    # Then we copy the AIBoard.qml file to our workdir.
+    cp $APP_INTERFACES_SOURCE "$WORKDIR/AppInterfaces.qml"
+
+    # Finally we modify the file.
+    sed -i '279 i console.log(root.fullCandidateList)' "$WORKDIR/AppInterfaces.qml"
+}
+
+debug_app_interfaces() {
+    # First we check if the AIBoard.qml file exists on the USB. If it does not we create it.
+    if [ 1 = 1 ]; then
+        if [ ! -f "$WORKDIR/AppInterfaces.qml" ]; then
+            echo "AppInterfaces override file did not exist. Creating one now."
+            create_app_interfaces_override
+        else
+            echo "AppInterfaces override file found at $WORKDIR/AppInterfaces.qml"
+        fi
+        # Then we mount --bind the AppInterfaces.qml override file. This is a non destructive action that can be reset with a reboot or umount.
+        mount --bind "$WORKDIR/AppInterfaces.qml" "$APP_INTERFACES_SOURCE"
+    else
+        echo "AppInterfaces block disabled. Reverting changes"
+        umount "$APP_INTERFACES_SOURCE" > /dev/null 2>&1 || :
+        rm -fr $WORKDIR/AppInterfaces.qml
+    fi
+}
+
 create_ai_board_override() {
     #! mountpoint -q "$AI_BOARD_SOURCE" || umount "$AI_BOARD_SOURCE"
     umount "$AI_BOARD_SOURCE" > /dev/null 2>&1 || :
@@ -209,6 +240,8 @@ init() {
 
     # Removes the whole top shelf container
     remove_top_shelf
+
+    debug_app_interfaces
 
     # When we are done we kill webOS home. This forces it to restart and use our changes.
     pkill -f com.webos.app.home
