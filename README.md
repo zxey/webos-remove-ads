@@ -1,5 +1,8 @@
 # WebOS Custom Home Screen
-Tested on OLED48C24LA
+Tested on OLED48C24LA  
+
+As of 04/12/2022, this script does not remove the TopShelf / hero banner.
+
 **WARNING!** This script is provided with no warranty, use at your own risk. 
 I have done the best I can to ensure the changes are safe and that they are not permanent.
 To neutralize this script, simply remove the USB and reboot the TV.
