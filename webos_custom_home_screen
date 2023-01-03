@@ -31,16 +31,15 @@ check_war_enabled() {
 }
 
 check_install() {
+    script_path=$(realpath "$0")
+
     # Check if installed. If not do install. If installed run from install location to ensure applying user settings
     if [ ! -f "/var/lib/webosbrew/init.d/webos_custom_home_screen" ]; then
         echo "Script is not installed. Installing."
-        curl -s -L https://raw.githubusercontent.com/farkmarnum/webos-custom-home-screen/main/webos_custom_home_screen > /var/lib/webosbrew/init.d/webos_custom_home_screen
+        cp "$script_path" /var/lib/webosbrew/init.d/webos_custom_home_screen
         chmod +x /var/lib/webosbrew/init.d/webos_custom_home_screen
     else
-    script_name1=`basename $0`
-    script_path1=`dirname $0`
-    script_path_with_name="$script_path1/$script_name1"
-        if [ "$script_path_with_name" = "/var/lib/webosbrew/init.d/webos_custom_home_screen" ]; then
+        if [ "$script_path" = "/var/lib/webosbrew/init.d/webos_custom_home_screen" ]; then
             echo "Script installed and started from right location, executing."
         else
             echo "Runnning Script from right location."
