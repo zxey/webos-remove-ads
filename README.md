@@ -12,5 +12,5 @@ To neutralize this script, simply remove the USB and reboot the TV.
 2. Setup SSH access using instructions provided by the rootmytv project. I recommend setting up SSH key access.
 3. connect to tv by SSH and run command below:
 ```
-curl -L https://raw.githubusercontent.com/aaayd/webos-remove-ads/main/webos_custom_home_screen | sh -
+curl -L https://raw.githubusercontent.com/zxey/webos-remove-ads/main/webos_custom_home_screen | sh -
 ```
